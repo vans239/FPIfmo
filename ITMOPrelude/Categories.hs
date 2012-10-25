@@ -28,8 +28,20 @@ instance Monad List where
 instance Functor List where
     fmap = map
 
+instance Functor Tree where
+    fmap = mapTree
+
+instance Functor Maybe where
+    fmap f (Just a) = Just (f a)
+    fmap f Nothing = Nothing
+
+instance Monad Maybe where
+    return a = Just a
+    (>>=) Nothing f = Nothing
+    (>>=) (Just a) f = f a 
+
 newtype State s a = State { runState :: s -> (s, a) }
 
-instance Monad (State s) where
-    return = ?
-    (>>=) = ?
+--instance Monad (State s) where
+--    return = error
+--    (>>=) = error

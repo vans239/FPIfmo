@@ -19,22 +19,7 @@ instance MonadFish m => MonadJoin m where
     returnJoin = returnFish
     join mma = (>=>) empty empty mma
 
--- m(m a) -> m a  == (>=>) :: (m m a -> m (m a)) -> (m a -> m (a)) -> m a
--- default
---class MonadFish m where
---    returnFish :: a -> m a
---    (>=>) :: (a -> m b) -> (b -> m c) -> (a -> m c) 
 
---class Functor m => MonadJoin m where
---    returnJoin :: a -> m a
---    join :: m (m a) -> m a
-
---class Functor f where
---    fmap :: (a -> b) -> f a -> f b
-
---class Monad m where
---    (>>=)  :: m a -> (a -> m b) -> m b 
---    return :: a -> m a
 
 
 
