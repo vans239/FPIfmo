@@ -5,6 +5,7 @@ import ITMOPrelude.Primitive
 import ITMOPrelude.List
 import ITMOPrelude.Tree
 
+--------------------------------------------------------------------------------
 -- Классы
 class Category cat where
     id  :: cat a a
@@ -27,3 +28,8 @@ instance Monad List where
 instance Functor List where
     fmap = map
 
+newtype State s a = State { runState :: s -> (s, a) }
+
+instance Monad (State s) where
+    return = ?
+    (>>=) = ?
