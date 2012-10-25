@@ -1,9 +1,11 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+<<<<<<< HEAD
 module ITMOPrelude.Algebra where
 
 import Prelude (Show,Read,error)
 import ITMOPrelude.Primitive
 import ITMOPrelude.List
+import ITMOPrelude.Tree
 
 class Monoid a where
    mempty :: a
@@ -11,6 +13,9 @@ class Monoid a where
    mconcat :: List a -> a
    mconcat Nil = mempty
    mconcat (Cons a list) = mappend a (mconcat list)
+
+class Monoid a => Group a where
+    ginv :: a -> a
 
 --concat
 instance Monoid (List a) where
@@ -35,9 +40,22 @@ instance Monoid Rat where
    mempty = Rat intOne natOne
    mappend = (%*)   
 
-class Group a where
-    gempty :: a
-    gappend :: a -> a -> a
-    ginv :: a -> a
 
+=======
+module ITMOPredule.Algebra where
+
+import ITMOPrelude.Primitive
+-- всевозможные инстансы для классов ниже 
+
+-- Если не страшно, то реализуйте их и для
+import ITMOPrelude.List
+import ITMOPrelude.Tree
+
+-- Классы
+class Monoid a where
+    mempty :: a
+    mappend :: a -> a -> a
+
+class Monoid a => Group a where
+    ginv :: a -> a
 

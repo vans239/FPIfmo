@@ -1,11 +1,14 @@
 {-# LANGUAGE NoImplicitPrelude, FlexibleInstances, UndecidableInstances #-}
+module ITMOPrelude.Categories where
 
-module ITMOPrelude.Algebra where
-
-import Prelude (Show,Read,error)
 import ITMOPrelude.Primitive
 import ITMOPrelude.List
-import qualified Prelude as P;
+import ITMOPrelude.Tree
+
+-- Классы
+class Category cat where
+    id  :: cat a a
+    (.) :: cat b c -> cat a b -> cat a c
 
 class Functor f where
     fmap :: (a -> b) -> f a -> f b
@@ -45,9 +48,11 @@ instance Monad m => MonadJoin m where
 instance MonadJoin m => Monad m where
     return = returnJoin
     (>>=) ma fa = join (fmap fa ma)
+
 -- other
 instance Monad List where
     (>>=) list f = concatMap f list
     return a = Cons a Nil
 instance Functor List where
     fmap = map
+
