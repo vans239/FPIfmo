@@ -23,6 +23,7 @@ class Monad m where
 instance Monad List where
     (>>=) list f = concatMap f list
     return a = Cons a Nil
+
 instance Functor List where
     fmap = map
 

@@ -1,7 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 module ITMOPrelude.Tree where
 
-<<<<<<< HEAD
 import Prelude (Show,Read,error)
 import ITMOPrelude.Primitive
 import ITMOPrelude.List
@@ -39,7 +38,3 @@ foldrTree :: (a -> b -> b) -> b -> Tree a -> b
 foldrTree fun b NilTree = b
 foldrTree fun b (ConsTree a left right) = foldrTree fun (fun a (foldrTree fun b right)) left
 
-=======
--- Всё что угодно, главное, чтобы соответствовало
--- заданию
->>>>>>> upstream/master
