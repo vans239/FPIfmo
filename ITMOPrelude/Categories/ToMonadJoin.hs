@@ -1,9 +1,13 @@
-{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE NoImplicitPrelude, FlexibleInstances, UndecidableInstances #-}
 module ITMOPrelude.Categories.ToMonadJoin where
 import ITMOPrelude.Categories.MonadJoin
 
--- Из этих
 import ITMOPrelude.Categories
 import ITMOPrelude.Categories.MonadFish
 
--- делаем эту
+instance Monad m => Functor m where
+    fmap f ma = (>>=) ma (return P.. f)
+
+instance Monad m => MonadJoin m where
+    returnJoin = return
+    join mma = (>>=) mma id
