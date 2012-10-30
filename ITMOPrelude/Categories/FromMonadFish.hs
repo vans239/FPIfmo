@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude, FlexibleInstances, UndecidableInstances #-}
+
 module ITMOPrelude.Categories.FromMonadFish where
 import ITMOPrelude.Categories.MonadFish
 
@@ -18,9 +19,3 @@ instance MonadFish m => Functor m where
 instance MonadFish m => MonadJoin m where
     returnJoin = returnFish
     join mma = (>=>) empty empty mma
-
-
-
-
-
-
