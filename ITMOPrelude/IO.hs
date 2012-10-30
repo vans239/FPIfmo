@@ -13,10 +13,17 @@ data RealWorld = RealWorld
 type IO a = State RealWorld a
 
 getNat :: IO Nat
-getNat = ?
+getNat = State ( \world -> 
+                 let newWorld = RealWorld (tail (stdIn world)) (stdOut world) (exitCode world)
+                 in (newWorld, head (stdIn world) ))
 
 putNat :: Nat -> IO ()
-putNat = ?
+putNat n = State ( \world ->
+                 let newWorld = RealWorld (stdIn world) (Cons n (stdOut world)) (exitCode world)
+                 in (newWorld, ()))
 
 setExitCode :: Nat -> IO ()
-setExitCode = ?
+setExitCode n = State ( \world ->
+                 let newWorld = RealWorld (stdIn world) (stdOut world) n
+                 in (newWorld, ()))
+

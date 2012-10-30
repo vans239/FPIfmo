@@ -40,8 +40,14 @@ instance Monad Maybe where
     (>>=) Nothing f = Nothing
     (>>=) (Just a) f = f a 
 
+instance Category (->) where
+    id = \x -> x
+    f . g = \x -> f ( g(x) )
+
 newtype State s a = State { runState :: s -> (s, a) }
 
---instance Monad (State s) where
---    return = error
---    (>>=) = error
+instance Monad (State s) where
+    return a = State (\s -> (s, a)) 
+    (>>=) state g = State (\s -> 
+        let (s', a) = runState state s 
+        in runState (g a) s')                      
