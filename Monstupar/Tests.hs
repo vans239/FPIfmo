@@ -39,8 +39,16 @@ balParTest = mustParse ""
 -- Список натуральных чисел
 -- тут следует использовать класс Read
 natList :: Monstupar Char [Integer]
-natList = undefined
-
+natList = nl >> (eof >>= (\_ -> return [])) where
+    nl = (do
+           many1 digit
+           optional commaWithNat
+         ) <|> (ok >>= (\_ -> return []))
+          
+commaWithNat = (do
+                 many1 digit
+                 char ','
+               )
 natListTest = mustFail  ""
           &.& mustParse "0"
           &.& mustParse "0,1"
