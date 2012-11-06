@@ -39,15 +39,20 @@ balParTest = mustParse ""
 -- Список натуральных чисел
 -- тут следует использовать класс Read
 natList :: Monstupar Char [Integer]
-natList = nl >> (eof >>= (\_ -> return [])) where
+--check eof
+natList = nl >>= aEof where
     nl = (do
-           many1 digit
-           optional commaWithNat
-         ) <|> (ok >>= (\_ -> return []))
-          
+           e <- many1 digit
+           es <- (many commaWithNat)
+           return (read e : es)
+         )
+
+empty = \_ -> return [] 
+commaWithNat :: Monstupar Char Integer         
 commaWithNat = (do
-                 many1 digit
-                 char ','
+                 char ',' >>= empty
+                 num <- many1 digit
+                 return (read num)
                )
 natListTest = mustFail  ""
           &.& mustParse "0"
@@ -57,4 +62,3 @@ natListTest = mustFail  ""
           &.& mustFail  "10,20,12,3423,2342,234,-2234,2342,22342,22232,17583,9573"
           &.& mustFail  "10,20,12,3423,0.,234,234,2342,22342,22232,17583,9573"
           $ natList
-

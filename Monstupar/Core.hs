@@ -3,7 +3,7 @@
 module Monstupar.Core
     ( ParseError(..)
     , Monstupar, runParser
-    , ok, isnot, eof, (<|>), like
+    , ok, isnot, eof, (<|>), like, aEof
     ) where
 
 --------------------------------------------------------------------------------
@@ -47,6 +47,10 @@ eof = Monstupar $ \s -> case s of
     [] -> Right (s , ())
     _  -> Left ParseError
 
+aEof :: a -> Monstupar s a
+aEof a = Monstupar $ \s -> case s of
+    [] -> Right (s , a)
+    _  -> Left ParseError
 infixr 2 <|>
 -- Сначала первый парсер, если он фейлится, то второй
 (<|>) :: Monstupar s a -> Monstupar s a -> Monstupar s a
