@@ -3,7 +3,7 @@
 module Monstupar.Core
     ( ParseError(..)
     , Monstupar, runParser
-    , ok, isnot, eof, (<|>), like, aEof
+    , ok, isnot, eof, (<|>), like, aEof, (<&>)
     ) where
 
 --------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ module Monstupar.Core
 
 -- Тело этого определения можно заменить на всё, что захочется
 data ParseError = ParseError
-                deriving (Show) -- лишь бы show был
+                deriving (Show, Eq) -- лишь бы show был
 
 newtype Monstupar s a = Monstupar { runParser :: [s] -> Either ParseError ([s], a) }
 
@@ -57,6 +57,11 @@ infixr 2 <|>
 a <|> b = Monstupar $ \s -> case runParser a s of
                               Left _ -> runParser b s
                               success -> success
+
+(<&>) :: Monstupar s () -> Monstupar s a -> Monstupar s a
+a <&> b = Monstupar $ \s -> case runParser a s of
+                              Left _ -> Left ParseError
+                              Right _ -> runParser b s 
 
 -- В голове ввода сейчас нечто, удовлетворяющее p
 like :: (s -> Bool) -> Monstupar s s

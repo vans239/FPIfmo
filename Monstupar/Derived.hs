@@ -53,3 +53,38 @@ optional p = (p >>= (\a -> return (Just a))) <|> return Nothing
 digit :: Monstupar Char Char
 digit = like (\x -> x >= '0' && x <= '9')
 
+notChar :: Eq s => s -> Monstupar s s
+notChar = like . (/=)
+
+notOneOf :: Eq s => [s] -> Monstupar s s
+notOneOf [] = like (\x -> True)
+notOneOf (x:xs) = (notChar x >> (return ())) <&> notOneOf xs
+
+
+capitalLetter :: Monstupar Char Char
+capitalLetter = like (\x -> x >= 'A' && x <= 'Z')
+
+lowerLetter :: Monstupar Char Char
+lowerLetter = like (\x -> x >= 'a' && x <= 'z')
+
+letter = lowerLetter <|> capitalLetter
+
+space :: Monstupar Char [Char]
+space = many1 (char ' ')
+
+separated :: Monstupar Char a -> Monstupar Char b -> Monstupar Char [a]
+separated a separator  = (do 
+                           e <- a
+                           es <- many ( (do 
+                                     separator 
+                                     a
+                                   )
+                                 )
+                           return (e : es)
+                         ) <|> return []
+
+emptyIfNull :: Maybe [a] -> [a]
+emptyIfNull Nothing = []
+emptyIfNull (Just arr) = arr
+
+
